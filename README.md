@@ -1,6 +1,8 @@
 # Weather-Cast
 A live weather dashboard built with real APIs, async JavaScript and error handling. You search any city (or let it auto-detect your location) and it pulls live weather data, a 24-hour forecast and a 7-day outlook.
 
+🔗 Live demo: https://weather-cast-steel.vercel.app
+
 ## What it does
 
 - 🔍 Search any city and get live current weather
