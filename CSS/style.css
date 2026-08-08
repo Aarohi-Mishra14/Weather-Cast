@@ -167,7 +167,7 @@ body.theme_mist {
     padding: 16px 22px;
     backdrop-filter: blur(14px);
     box-shadow: var(--shadow-panel);
-    margin-bottom: 22px;
+    margin-bottom: 32px;
 }
 
 .logo_section {
