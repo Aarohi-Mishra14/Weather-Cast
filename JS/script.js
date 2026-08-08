@@ -72,7 +72,6 @@ const elements = {
     favoritesCountBadge: document.getElementById("favorites_count"),
     unitCBtn: document.getElementById("celsius_btn"),
     unitFBtn: document.getElementById("fahrenheit_btn"),
-    updatedText: document.getElementById("updated_time"),
     citySearchInput: document.getElementById("city_input"),
     searchBtn: document.getElementById("search_btn"),
     recentSearchesPanel: document.getElementById("recent_searches"),
@@ -128,7 +127,7 @@ const elements = {
 };
 
 const {
-    locationBtn, refreshBtn, favoritesBtn, favoritesCountBadge, unitCBtn, unitFBtn, updatedText,
+    locationBtn, refreshBtn, favoritesBtn, favoritesCountBadge, unitCBtn, unitFBtn,
     citySearchInput, searchBtn, recentSearchesPanel, recentSearchesList, clearHistoryBtn,
     popularCitiesRow, popularCitiesList, loadingState, errorState, errorTitleText, errorMessageText,
     errorRetryBtn, weatherContent, cityNameText, regionCountryText, shortDateText, clockTimeText,
@@ -682,10 +681,6 @@ function buildForecastTile(label, weatherType, weatherDescription, tempLabel, po
 }
 
 function updateTimestamps() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    updatedText.textContent = "Updated: " + hours + ":" + minutes;
     refreshFooterElapsedText();
 }
 
