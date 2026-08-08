@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather-Cast | Live Weather Dashboard</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/03c335e5b6.js" crossorigin="anonymous"></script>
+</head>
+
+<body id="body">
+    <div class="container">
+        <header class="header">
+            <div class="logo_section">
+                <div id="logo"><i class="fa-solid fa-cloud-sun"></i></div>
+                <div class="logo_text">
+                    <div class="title_row">
+                        <b id="site_name">Weather-Cast</b>
+                        <span id="live_tag" class="live_tag"><i class="fa-solid fa-bolt"></i> Live</span>
+                    </div>
+                    <span id="tagline">Live Weather Dashboard</span>
+                </div>
+            </div>
+
+            <div class="header_buttons">
+                <button type="button" id="location_btn" class="header_btn">
+                    <i class="fa-solid fa-location-dot"></i> Location
+                </button>
+                <button type="button" id="refresh_btn" class="header_btn">
+                    <i class="fa-solid fa-rotate"></i> Refresh
+                </button>
+                <button type="button" id="favorites_btn" class="header_btn">
+                    <i class="fa-solid fa-bookmark"></i> Favorites
+                    <span id="favorites_count" class="favorites_count hidden">0</span>
+                </button>
+
+                <div class="unit_box">
+                    <button type="button" id="celsius_btn" class="unit_btn active" aria-label="Switch to Celsius">&deg;C</button>
+                    <button type="button" id="fahrenheit_btn" class="unit_btn" aria-label="Switch to Fahrenheit">&deg;F</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="update_time">
+            <span id="updated_time">Updated: --:--</span>
+        </div>
+
+        <div class="search_section">
+            <div class="search_area">
+                <div class="search_box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="city_input" placeholder="Search any city..." autocomplete="off" aria-label="Search for a city">
+                </div>
+                <button type="button" id="search_btn" class="btn primary_btn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Search
+                </button>
+            </div>
+
+            <div id="recent_searches" class="recent_searches hidden">
+                <div class="recent_header">
+                    <span><i class="fa-solid fa-clock-rotate-left"></i> RECENT SEARCHES</span>
+                    <button type="button" id="clear_history" class="clear_history_link">Clear History</button>
+                </div>
+                <div id="recent_list" class="recent_list"></div>
+            </div>
+
+            <div id="popular_cities" class="popular_cities">
+                <span class="popular_label">Popular:</span>
+                <div id="popular_list" class="popular_list"></div>
+            </div>
+        </div>
+
+        <main>
+            <section id="loading_state" class="loading_card hidden">
+                <div class="shimmer_top_row">
+                    <div class="shimmer_block shimmer_pill"></div>
+                    <div class="shimmer_block shimmer_pill_small"></div>
+                </div>
+                <div class="loading_middle">
+                    <div class="shimmer_block shimmer_big"></div>
+                    <div class="shimmer_block shimmer_circle"></div>
+                </div>
+                <div class="shimmer_line"></div>
+                <div class="loading_tiles">
+                    <div class="shimmer_block shimmer_tile"></div>
+                    <div class="shimmer_block shimmer_tile"></div>
+                    <div class="shimmer_block shimmer_tile"></div>
+                </div>
+            </section>
+
+            <section id="error_state" class="error_card hidden">
+                <div class="error_icon"><i class="fa-solid fa-cloud-bolt"></i></div>
+                <h3 id="error_title_text">City not found</h3>
+                <p id="error_message_text">Please check the spelling or try another location. The server returned a 404 lookup code.</p>
+                <button type="button" id="error_retry_btn" class="btn secondary_btn">
+                    <i class="fa-solid fa-rotate-left"></i> Try Another Location
+                </button>
+            </section>
+
+            <section id="weather_content" class="weather hidden">
+                <div class="weather_layout">
+                    <div class="card weather_card">
+                        <div class="weather_top">
+                            <div class="location_box">
+                                <div class="location_name_row">
+                                    <h1 id="city_name">--</h1>
+                                    <button type="button" id="favorite_btn" class="favorite_btn" title="Save to favorites" aria-label="Save this city to favorites" aria-pressed="false">
+                                        <i class="fa-solid fa-bookmark" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <span id="city_location" class="location_text">--</span>
+                                <div class="date_row">
+                                    <span><i class="fa-regular fa-calendar"></i> <span id="date">--</span></span>
+                                    <span class="dot">&bull;</span>
+                                    <span><i class="fa-regular fa-clock"></i> <span id="time">--</span></span>
+                                </div>
+                            </div>
+                            <div class="badges_col">
+                                <span id="day_time" class="day_time">--</span>
+                                <div class="temp_range">
+                                    <span class="high_temp_text">H: <span id="high_temp">--</span>&deg;</span>
+                                    <span class="divider">|</span>
+                                    <span class="low_temp_text">L: <span id="low_temp">--</span>&deg;</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="temp_row">
+                            <div class="temp_box">
+                                <div id="weather_icon" class="weather_icon_box">
+                                    <img id="weather_icon_img" class="weather_icon_image" src="" alt="Weather icon">
+                                </div>
+                                <div class="temperature"><span id="temperature">--</span><sup id="temp_unit">&deg;C</sup></div>
+                            </div>
+                            <div class="vertical_line"></div>
+                            <div class="condition_box">
+                                <h2 id="weather_type">--</h2>
+                                <p id="weather_info">--</p>
+                                <div class="feels_like_row"><i class="fa-solid fa-temperature-half"></i> Feels like <b id="feels_like">--&deg;</b></div>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="weather_stats">
+                            <div class="stat_card">
+                                <div class="stat_icon icon_humidity"><i class="fa-solid fa-droplet" aria-hidden="true"></i></div>
+                                <div class="stat_text"><span>Humidity</span><b id="humidity">--%</b></div>
+                            </div>
+                            <div class="stat_card">
+                                <div class="stat_icon icon_wind"><i class="fa-solid fa-wind" aria-hidden="true"></i></div>
+                                <div class="stat_text"><span>Wind Speed</span><b><i id="wind_arrow" class="fa-solid fa-arrow-up wind_arrow" aria-hidden="true"></i> <span id="wind_speed">-- km/h</span></b></div>
+                            </div>
+                            <div class="stat_card">
+                                <div class="stat_icon icon_pressure"><i class="fa-solid fa-gauge" aria-hidden="true"></i></div>
+                                <div class="stat_text"><span>Pressure</span><b id="pressure">-- hPa</b></div>
+                            </div>
+                            <div class="stat_card">
+                                <div class="stat_icon icon_visibility"><i class="fa-solid fa-eye" aria-hidden="true"></i></div>
+                                <div class="stat_text"><span>Visibility</span><b id="visibility">-- km</b></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="extra_stats">
+                        <div class="info_card">
+                            <div class="info_icon icon_uv"><i class="fa-solid fa-sun" aria-hidden="true"></i></div>
+                            <div class="info_text"><span>UV Index</span><b id="uv_index">--</b></div>
+                        </div>
+                        <div class="info_card">
+                            <div class="info_icon icon_sunrise"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></div>
+                            <div class="info_text"><span>Sunrise</span><b id="sunrise">--:--</b></div>
+                        </div>
+                        <div class="info_card">
+                            <div class="info_icon icon_sunset"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></div>
+                            <div class="info_text"><span>Sunset</span><b id="sunset">--:--</b></div>
+                        </div>
+                        <div class="info_card">
+                            <div class="info_icon icon_feelslike"><i class="fa-solid fa-temperature-half" aria-hidden="true"></i></div>
+                            <div class="info_text"><span>Feels Like</span><b id="feels_temp">--&deg;</b></div>
+                        </div>
+                        <div class="info_card wide_card">
+                            <div class="info_icon icon_wind"><i class="fa-solid fa-compass" aria-hidden="true"></i></div>
+                            <div class="info_text"><span>Wind Direction</span><b><i id="wind_icon" class="fa-solid fa-arrow-up wind_arrow" aria-hidden="true"></i> <span id="wind_direction">--</span></b></div>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="card forecast_card">
+                    <div class="forecast_top">
+                        <div class="forecast_heading">
+                            <h2>Weather Forecast</h2>
+                            <p>Weather forecast for next few hours and days</p>
+                        </div>
+                        <div class="forecast_btns">
+                            <button type="button" id="hourly_btn" class="forecast_btn active">
+                                <i class="fa-regular fa-clock"></i> 24-Hour Timeline
+                            </button>
+                            <button type="button" id="daily_btn" class="forecast_btn">
+                                <i class="fa-regular fa-calendar"></i> 7-Day Outlook
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="forecast_box">
+                        <div id="hourly_forecast" class="forecast_list"></div>
+                        <div id="daily_forecast" class="forecast_list hidden"></div>
+                    </div>
+                </section>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <span id="last_update">Last updated: --</span>
+            <span>Weather-Cast &middot; &copy; 2026</span>
+        </footer>
+    </div>
+
+    <div id="overlay" class="overlay hidden"></div>
+    <aside id="favorites_box" class="favorites_box hidden">
+        <div class="favorites_head">
+            <div class="favorites_title">
+                <div class="favorites_icon"><i class="fa-solid fa-bookmark"></i></div>
+                <div>
+                    <h3>Saved Locations</h3>
+                    <p id="favorites_total">0 bookmarked cities</p>
+                </div>
+            </div>
+            <button type="button" id="close_btn" class="close_btn" aria-label="Close favorites panel"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        </div>
+        <div id="favorites_list" class="favorites_list_box"></div>
+        <button type="button" id="clear_favorites" class="clear_favorites_btn hidden">Clear All Favorites</button>
+    </aside>
+
+    <div id="message" class="message hidden"></div>
+
+    <script src="JS/script.js"></script>
+</body>
+</html>
